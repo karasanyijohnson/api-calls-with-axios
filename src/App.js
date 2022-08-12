@@ -54,6 +54,7 @@ function App() {
     e.preventDefault();
     const id = posts.length ? posts[posts.length - 1].id + 1 : 1;
     const datetime = format(new Date(), 'MMMM dd, yyyy pp');
+    // create a new post
     const newPost = { id, title: postTitle, datetime, body: postBody };
     try {
       const response = await api.post('/posts', newPost);
@@ -61,7 +62,7 @@ function App() {
       setPosts(allPosts);
       setPostTitle('');
       setPostBody('');
-      history.push('/');
+      history.push('/'); // used to go back 
     } catch (err) {
       console.log(`Error: ${err.message}`);
     }
@@ -71,6 +72,8 @@ function App() {
     const datetime = format(new Date(), 'MMMM dd, yyyy pp');
     const updatedPost = { id, title: editTitle, datetime, body: editBody };
     try {
+      // We are using Put because we are replacing the intire post
+      // We use Patch when we want to replace a specific element
       const response = await api.put(`/posts/${id}`, updatedPost);
       setPosts(posts.map(post => post.id === id ? { ...response.data } : post));
       setEditTitle('');
